@@ -23,6 +23,8 @@ func main() {
 
 	kafkaClient := kafka.GetClient()
 
+	log.Println("Starting search-consumer service")
+
 	for {
 		d, err := kafkaClient.ReadMessage(context.Background()) // ReadMessage blocks until recieve new message
 		defer kafkaClient.Close()
@@ -40,7 +42,6 @@ func main() {
 
 		fmt.Println(messages.Data.Name)
 
-		// consume(messages)
-
+		consume(messages)
 	}
 }

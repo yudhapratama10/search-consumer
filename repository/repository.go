@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -27,6 +28,8 @@ func (repo *footballRepository) Insert(data model.FootballClub) (model.FootballC
 	if err != nil {
 		return model.FootballClub{}, err
 	}
+
+	fmt.Println(string(strQuery))
 
 	// Perform the index request.
 	req := esapi.IndexRequest{
@@ -62,6 +65,8 @@ func (repo *footballRepository) Update(data model.FootballClub) (model.FootballC
 		return model.FootballClub{}, err
 	}
 
+	// fmt.Println(string(strQuery))
+
 	// Perform the index request.
 	req := esapi.IndexRequest{
 		Index:      "footballclubs",
@@ -72,6 +77,7 @@ func (repo *footballRepository) Update(data model.FootballClub) (model.FootballC
 
 	res, err := req.Do(context.Background(), repo.client)
 	defer res.Body.Close()
+	// fmt.Println(err)
 
 	if err != nil {
 		return model.FootballClub{}, err

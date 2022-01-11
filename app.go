@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/yudhapratama10/search-consumer/model"
@@ -12,6 +13,8 @@ func consume(data model.Message) {
 
 	repo := repository.NewFootballRepository(elasticClient)
 	usecase := usecase.NewFootballClubUsecase(repo)
+
+	fmt.Println(data.Operation)
 
 	if data.Operation == "insert" {
 		// Inserting to ES
