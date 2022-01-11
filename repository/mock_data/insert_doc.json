@@ -1,0 +1,14 @@
+{
+    "_index": "footballclubs",
+    "_type": "_doc",
+    "_id": "1",
+    "_version": 1,
+    "result": "inserted",
+    "_shards": {
+        "total": 1,
+        "successful": 1,
+        "failed": 0
+    },
+    "_seq_no": 15,
+    "_primary_term": 7
+}
