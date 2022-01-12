@@ -42,6 +42,36 @@ func TestInsert(t *testing.T) {
 		var (
 			data = model.FootballClub{
 				Id:          20,
+				Name:        "Manchester City",
+				Nation:      "Inggris",
+				Tournaments: []string{"English Premier League", "FA Cup", "Uefa Champions League", "FA Community Shield"},
+				Rating:      5,
+				Description: "Manchester City Football Club (dikenal pula sebagai Man City atau The Citizens) adalah sebuah klub sepak bola profesional dari Inggris yang bermain di Liga Premier Inggris. Klub ini merupakan klub sekota dengan Manchester United dan bermarkas di Stadion Etihad, Manchester.",
+			}
+		)
+
+		repo := new(repository.FootballMock)
+		uc := NewFootballClubUsecase(repo)
+
+		//Insert(data model.FootballClub) (model.FootballClub, error)
+		repo.On("Insert", data).Return(data, nil)
+
+		resp, err := uc.Insert(data)
+
+		assert.NoError(t, err)
+		assert.NotEmpty(t, resp)
+	})
+}
+
+func TestUpdate(t *testing.T) {
+
+	t.Parallel()
+
+	t.Run("Should be Success Update", func(t *testing.T) {
+
+		var (
+			data = model.FootballClub{
+				Id:          20,
 				Name:        "Newcastle United",
 				Nation:      "Inggris",
 				Tournaments: []string{"English Premier League", "FA Cup"},
@@ -54,9 +84,34 @@ func TestInsert(t *testing.T) {
 		uc := NewFootballClubUsecase(repo)
 
 		//Insert(data model.FootballClub) (model.FootballClub, error)
-		repo.On("Insert", data).Return(data, nil)
+		repo.On("Update", data).Return(data, nil)
 
-		resp, err := uc.Insert(data)
+		resp, err := uc.Update(data)
+
+		assert.NoError(t, err)
+		assert.NotEmpty(t, resp)
+	})
+
+	t.Run("Should be Success Update 2", func(t *testing.T) {
+
+		var (
+			data = model.FootballClub{
+				Id:          20,
+				Name:        "Manchester City",
+				Nation:      "Inggris",
+				Tournaments: []string{"English Premier League", "FA Cup", "Uefa Champions League", "FA Community Shield"},
+				Rating:      5,
+				Description: "Manchester City Football Club (dikenal pula sebagai Man City atau The Citizens) adalah sebuah klub sepak bola profesional dari Inggris yang bermain di Liga Premier Inggris. Klub ini merupakan klub sekota dengan Manchester United dan bermarkas di Stadion Etihad, Manchester.",
+			}
+		)
+
+		repo := new(repository.FootballMock)
+		uc := NewFootballClubUsecase(repo)
+
+		//Insert(data model.FootballClub) (model.FootballClub, error)
+		repo.On("Update", data).Return(data, nil)
+
+		resp, err := uc.Update(data)
 
 		assert.NoError(t, err)
 		assert.NotEmpty(t, resp)
