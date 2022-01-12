@@ -48,7 +48,6 @@ func (repo *footballRepository) Insert(data model.FootballClub) (model.FootballC
 }
 
 func (repo *footballRepository) Update(data model.FootballClub) (model.FootballClub, error) {
-
 	query := map[string]interface{}{
 		"name":        data.Name,
 		"tournaments": data.Tournaments,
@@ -85,7 +84,6 @@ func (repo *footballRepository) Update(data model.FootballClub) (model.FootballC
 }
 
 func (repo *footballRepository) Delete(data model.FootballClub) (model.FootballClub, error) {
-
 	// Perform the delete request.
 	req := esapi.DeleteRequest{
 		Index:      "footballclubs",

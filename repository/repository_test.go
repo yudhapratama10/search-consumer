@@ -19,15 +19,6 @@ var (
 	fixtures = make(map[string]io.ReadCloser)
 )
 
-type MockTransport struct {
-	Response    *http.Response
-	RoundTripFn func(req *http.Request) (*http.Response, error)
-}
-
-func (t *MockTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	return t.RoundTripFn(req)
-}
-
 func init() {
 	fixtureFiles, err := filepath.Glob("mock_data/*.json")
 	if err != nil {
@@ -56,20 +47,21 @@ func fixture(fname string) io.ReadCloser {
 	return ioutil.NopCloser(out)
 }
 
-func TestInsert(t *testing.T) {
+func TestIndex(t *testing.T) {
 	t.Parallel()
 
-	mocktrans := MockTransport{
+	// Create Mock for Elasticsearch Server
+	mock := TransportMock{
 		Response: &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       ioutil.NopCloser(strings.NewReader(`{}`)),
 			Header:     http.Header{"X-Elastic-Product": []string{"Elasticsearch"}},
 		},
 	}
-	mocktrans.RoundTripFn = func(req *http.Request) (*http.Response, error) { return mocktrans.Response, nil }
+	mock.RoundTripFn = func(req *http.Request) (*http.Response, error) { return mock.Response, nil }
 
 	client, err := elasticsearch.NewClient(elasticsearch.Config{
-		Transport: &mocktrans,
+		Transport: &mock,
 	})
 	if err != nil {
 		t.Fatalf("Error creating Elasticsearch client: %s", err)
@@ -88,7 +80,7 @@ func TestInsert(t *testing.T) {
 	}
 
 	t.Run("Success Insert Index", func(t *testing.T) {
-		mocktrans.Response = &http.Response{
+		mock.Response = &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       fixture("insert_doc.json"),
 		}
@@ -98,7 +90,7 @@ func TestInsert(t *testing.T) {
 	})
 
 	t.Run("Success Update Index", func(t *testing.T) {
-		mocktrans.Response = &http.Response{
+		mock.Response = &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       fixture("update_doc.json"),
 		}
