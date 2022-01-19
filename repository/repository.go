@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -10,7 +11,7 @@ import (
 	"github.com/yudhapratama10/search-consumer/model"
 )
 
-var topic string = "test-messages"
+// var topic string = "test-messages"
 
 func (repo *footballRepository) Insert(data model.FootballClub) (model.FootballClub, error) {
 
@@ -30,6 +31,7 @@ func (repo *footballRepository) Insert(data model.FootballClub) (model.FootballC
 
 	// fmt.Println(string(strQuery))
 
+	fmt.Println(data)
 	// Perform the index request.
 	req := esapi.IndexRequest{
 		Index:      "footballclubs",

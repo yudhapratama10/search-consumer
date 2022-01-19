@@ -11,7 +11,7 @@ func GetClient() *kafka.Reader {
 
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: brokers,
-		Topic:   "test-messages",
+		Topic:   "search",
 		GroupID: "test",
 	})
 
